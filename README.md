@@ -1,1 +1,1 @@
-# classic-cs-problems
+# Classic Computer Science Problems Book exercises
