@@ -10,17 +10,29 @@ class Stack(Generic[T]):
         self._name = name
 
     def push(self, item: T) -> None:
-        print(f'tower = {self._name} push = {item}')
+        #print(f'tower = {self._name} push = {item}')
         self._container.append(item)
 
     def pop(self) -> T:
         item: int = self._container.pop()
-        print(f'tower = {self._name} pop = {item}')
+        #print(f'tower = {self._name} pop = {item}')
         return item
+
+    def get(self, index: int) -> int:
+        return self._container[index]
+
+    def get_size(self) -> int:
+        return len(self._container)        
+
+    def is_not_empty(self) -> bool :
+
+        return len(self._container) > 0
 
     # this is what will be printed when the print method being invoked
     def __repr__(self) -> str:
         return repr(self._container)
+
+
 
     def print(self) -> None:
         print(f'tower = {self._name}')
@@ -42,44 +54,59 @@ class HanoiTowerSolver:
         self._towers.append(Stack("C"))
         self._moves: int = 0
 
-    def move_disk(self, source: Stack[int], destination: Stack[int], auxiliar_towers: List[Stack[int]], n: int) -> None:
-        print(f'#move = {self._moves} source = {source} destination = {destination} aux-towers = {auxiliar_towers}')
+    def move_disk(self, source: int, destination: int, aux: int, n: int) -> None:
+        #print(f'#move = {self._moves} disk = {n} source = {source} destination = {destination} aux-towers = {aux}')
+
+        if(self._moves > 20):
+             raise Exception("It doesnt make sense")
         
         
         self._moves += 1
         if n == 1:
-            destination.push(source.pop())
+            self._towers[destination].push(self._towers[source].pop())
 
-        if n != 1 and len(auxiliar_towers) == 1:
-            self.move_disk(source, auxiliar_towers[0], [destination], n - 1)
+        if n != 1:
+            self.move_disk(source, aux, destination, n - 1)
             
-            self.move_disk(source, destination, auxiliar_towers, 1)
+            self.move_disk(source, destination, aux, 1)
             
-            self.move_disk(auxiliar_towers[0], destination , [source], n -1 )
+            self.move_disk(aux, destination , source, n -1 )
 
+        self.print()
 
     def solve(self) -> None:
         for i in range(1, self._disks + 1):
             self._towers[0].push(i)
 
-        source_tower: Stack[int] = self._towers[0]
-        dest_tower: Stack[int] = self._towers[-1:][0] # extract a list with only the last item and get the first element from the new list
-        aux_towers: List[Stack[int]] = self._towers[1:-1] # create new list without the first and the last element
+        self.print()
 
-        self.move_disk(source_tower, dest_tower, aux_towers, self._disks)        
+        self.move_disk(0, 2, 1, self._disks)        
 
     def print(self) -> None:
-        print(f'total moves = {self._moves}')
+        j: int = self._disks-1 
 
-        for tower in self._towers:
-            tower.print()
+        report: str = ""
+        for _ in range(self._disks):
+            for tower in self._towers:
+                
+                tower_size: int = tower.get_size() 
 
+                if (tower_size - 1) >= j:
+                    report += " " + str(tower.get(j)) + " "
+                else:
+                    report += " X "
+
+            j -= 1
+            report += "\n"
+
+        print(report)
     
 
 if __name__ == "__main__":
 
     hanoiTowerSolver: HanoiTowerSolver = HanoiTowerSolver(3)
+
     hanoiTowerSolver.solve()
 
     print("---------")
-    hanoiTowerSolver.print()
+    
