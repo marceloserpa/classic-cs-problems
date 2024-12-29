@@ -57,15 +57,20 @@ class HanoiTowerSolver:
     def move_disk(self, source: int, destination: int, aux: int, n: int) -> None:
         #print(f'#move = {self._moves} disk = {n} source = {source} destination = {destination} aux-towers = {aux}')
 
+        # TODO: just for testing
         if(self._moves > 20):
-             raise Exception("It doesnt make sense")
-        
+             raise Exception("It doesnt make sense")     
+
+        if len(self._towers) < 3:
+            raise Exception("Invalid number of towers, the minimum is 3")   
         
         self._moves += 1
         if n == 1:
             self._towers[destination].push(self._towers[source].pop())
+            self.print()
+            return None
 
-        if n != 1:
+        if len(self._towers) == 3:
             self.move_disk(source, aux, destination, n - 1)
             
             self.move_disk(source, destination, aux, 1)
