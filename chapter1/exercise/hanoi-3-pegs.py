@@ -76,6 +76,8 @@ class HanoiTowerSolver:
             self.move_disk(source, destination, aux, 1)
             
             self.move_disk(aux, destination , source, n -1 )
+        else:
+            print("Not Implemented Yet")
 
         self.print()
 
