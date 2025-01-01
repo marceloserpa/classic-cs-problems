@@ -46,25 +46,24 @@ class Stack(Generic[T]):
 
 class HanoiTowerSolver:
 
-    def __init__(self, disks: int) -> None:
+    def __init__(self, disks: int, number_of_towers: int) -> None:
         self._disks: int = disks
-        self._towers: List[Stack[int]] = []
-        self._towers.append(Stack("A"))
-        self._towers.append(Stack("B"))
-        self._towers.append(Stack("C"))
-        self._towers.append(Stack("D"))
-        self._towers.append(Stack("E"))
         self._moves: int = 0
 
-    def frame_stewart(self, source, destination, auxiliary, number_of_disks, number_of_towers, ) -> None:
+        self._towers: List[Stack[int]] = [Stack(f"T{i}") for i in range(number_of_towers)]
+        for i in range(1, self._disks + 1):
+            self._towers[0].push(i) 
+
+    def frame_stewart(self, source: int, destination: int, auxiliary: List[int], number_of_disks: int, number_of_towers: int ) -> None:
         # Solves the generalized Tower of Hanoi problem using a fixed partition size (n // 2).
 
         # Base case: If there's only one disk, move it directly.
         if number_of_disks == 1:
             # Move the disk from source to destination
-            self._towers[destination].push(self._towers[source].pop())
+            disk: int = self._towers[source].pop()
+            self._towers[destination].push(disk)
             self._moves += 1
-            print(f'from {source} to destination {destination}')
+            print(f'move disk {disk}: {source} => {destination}')
             self.print()
             return 1
 
@@ -97,8 +96,6 @@ class HanoiTowerSolver:
         print(report)
 
     def solve(self) -> None:
-        for i in range(1, self._disks + 1):
-            self._towers[0].push(i)
 
         self.print()
         
@@ -107,7 +104,7 @@ class HanoiTowerSolver:
 
 if __name__ == "__main__":
 
-    hanoiTowerSolver: HanoiTowerSolver = HanoiTowerSolver(4)
+    hanoiTowerSolver: HanoiTowerSolver = HanoiTowerSolver(4, 5)
 
     hanoiTowerSolver.solve()
 
