@@ -65,7 +65,7 @@ class HanoiTowerSolver:
             self._moves += 1
             print(f'move disk {disk}: {source} => {destination}')
             self.print()
-            return 1
+            return
 
         # Define partition size: m = n // 2
         partition = number_of_disks // 2
@@ -98,8 +98,11 @@ class HanoiTowerSolver:
     def solve(self) -> None:
 
         self.print()
+
+        last_index: int = len(self._towers) - 1
+        aux_indexes: List[int] = list(range(1, last_index -1 ))
         
-        self.frame_stewart(0, 4, [1,2], self._disks, 4)
+        self.frame_stewart(0, last_index, aux_indexes, self._disks, last_index)
     
 
 if __name__ == "__main__":
