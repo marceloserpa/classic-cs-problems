@@ -23,10 +23,27 @@ def linear_contains(gene: Gene, key_codon: Codon) -> bool:
         if codon == key_codon:
             return True
     return False
+
+def binary_contains(gene: Gene, key_codon: Codon) -> bool:
+    low: int = 0
+    high: int = len(gene) - 1
+
+    while low <= high:
+        mid: int = (low + high) // 2 # low + high calculate the searchable area
+
+        if gene[mid] < key_codon:
+            low = mid + 1 # +1 is to skip the current element since it is not equal the searched element
+        elif gene[mid] > key_codon:
+            high = mid - 1 # the same 
+        else:
+            return True
+    return False
+
             
 my_gene: Gene = string_to_gene(gene_str)
 print(my_gene)
 
+print("Linear search")
 
 acg: Codon = (Nucleotide.A, Nucleotide.C, Nucleotide.G)
 gat: Codon = (Nucleotide.G, Nucleotide.A, Nucleotide.T)
@@ -34,3 +51,12 @@ gat: Codon = (Nucleotide.G, Nucleotide.A, Nucleotide.T)
 print(linear_contains(my_gene, acg))
 
 print(linear_contains(my_gene, gat))
+
+print("Binary search")
+
+sorted_gene: Gene = sorted(string_to_gene(gene_str))
+print(sorted_gene)
+
+print(binary_contains(sorted_gene, acg))
+
+print(binary_contains(sorted_gene, gat))
