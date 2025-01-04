@@ -1,5 +1,6 @@
 from enum import IntEnum
 from typing import Tuple, List
+from bisect import bisect_left
 
 Nucleotide: IntEnum = IntEnum("Nucleotide", ('A', 'C', 'G', 'T'))
 Codon = Tuple[Nucleotide, Nucleotide, Nucleotide]
@@ -28,16 +29,23 @@ def binary_contains(gene: Gene, key_codon: Codon) -> bool:
     low: int = 0
     high: int = len(gene) - 1
 
-    while low <= high:
+    while low <= high: # verify the searchable area
         mid: int = (low + high) // 2 # low + high calculate the searchable area
 
         if gene[mid] < key_codon:
-            low = mid + 1 # +1 is to skip the current element since it is not equal the searched element
+            low = mid + 1 # resize the searchableare and use +1 is to skip the current element since it is not equal the searched element
         elif gene[mid] > key_codon:
             high = mid - 1 # the same 
         else:
             return True
     return False
+
+def bisect_contains(gene: Gene, key_codon: Codon) -> bool:
+    index: int = bisect_left(gene, key_codon)
+    if index != len(gene) and gene[index]  == key_codon:
+        return index
+    return -1
+
 
             
 my_gene: Gene = string_to_gene(gene_str)
@@ -60,3 +68,13 @@ print(sorted_gene)
 print(binary_contains(sorted_gene, acg))
 
 print(binary_contains(sorted_gene, gat))
+
+
+print("Binary search using Bisect")
+
+sorted_gene: Gene = sorted(string_to_gene(gene_str))
+print(sorted_gene)
+
+print(bisect_contains(sorted_gene, acg))
+
+print(bisect_contains(sorted_gene, gat))
