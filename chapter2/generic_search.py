@@ -1,4 +1,6 @@
 from __future__ import annotations
+from decimal import Clamped
+from optparse import Option
 from typing import TypeVar, Iterable, Sequence, Generic, List, Callable, Set, Deque, Dict, Any, Optional
 from typing_extensions import Protocol
 from heapq import heappush, heappop
@@ -41,7 +43,46 @@ def binary_contains(sequence: Sequence[C], key: C) -> bool:
         else:
             return True
     return False
+
+def dfs(initial: T, goal_test: Callable[[T], bool], successors: Callable[[T], List[T]]) -> Optional[Node]:
+
+    # frontier are places that we didnt visit yet
+    frontier: Stack[Node[T]] = Stack()
+    frontier.push(initial, None)
+
+    explored: Set[T] = { initial}
+
+    # explore all places until reach the goal
+    while not frontier.empty:
+        current_node: Node[T] = frontier.pop()
+        current_state: T = current_node.state
+
+        # if True, we found the goal
+        if goal_test(current_state):
+            return current_node
+        
+        for child in successors(current_state):
+            if child in explored:
+                continue
+            explored.add(child)
+            frontier.push(Node(child, current_node))
+
+    return None
+
+def node_to_path(node: Node[T]) -> List[T]:
+    path: List[T] = [node.state]
+
+    while node.parent is not None:
+        node = node.parent
+        path.append(node.state)
     
+    path.reverse()
+    return path
+
+
+
+
+
 
 class Stack(Generic[T]):
 
@@ -60,6 +101,18 @@ class Stack(Generic[T]):
 
     def __repr__(self) -> str:
         return repr(self._container)
+
+class Node(Generic[T]):
+    def __init__(self, state: T, parent: Optional[Node], cost: float = 0.0, heuristic: float = 0.0) -> None:
+        self.state: T = state
+        self.parent: Optional[Node] = parent
+        self.cost: float = cost
+        self.heuristic: float = heuristic
+
+    def __lt__(self, other: Node) -> bool:
+        return (self.cost + self.heuristic) < (other.cost + other.heuristic)
+        
+
 
 
 
