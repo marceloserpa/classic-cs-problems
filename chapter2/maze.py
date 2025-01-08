@@ -4,6 +4,7 @@ import random
 from math import sqrt
 
 #from generic_search import dfs, bfs, node_to_path, astar, Node
+from generic_search import dfs, node_to_path, Node
 
 class Cell(str, Enum):
     EMPTY = "-"
@@ -62,10 +63,37 @@ class Maze:
         if(location.column + 1 < self._columns and self._grid[location.row][location.column + 1] != Cell.BLOCKED):
             locations.append(MazeLocation(location.row, location.column + 1))
 
-        if(location.column - 1 < 0 and self._grid[location.row][location.column - 1] != Cell.BLOCKED):
+        if(location.column - 1 >= 0 and self._grid[location.row][location.column - 1] != Cell.BLOCKED):
             locations.append(MazeLocation(location.row, location.column - 1))
 
         return locations
 
-maze: Maze = Maze()
-print(maze)
+    def mark(self, path: List[MazeLocation]) -> None:
+        for maze_location in path:
+            self._grid[maze_location.row][maze_location.column] = Cell.PATH
+        self._grid[self.start.row][self.start.column] = Cell.START
+        self._grid[self.goal.row][self.goal.column] = Cell.GOAL
+        
+    def clear(self, path: List[MazeLocation]) -> None:
+        for maze_location in path:
+            self._grid[maze_location.row][maze_location.column] = Cell.EMPTY
+        self._grid[self.start.row][self.start.column] = Cell.START
+        self._grid[self.goal.row][self.goal.column] = Cell.GOAL
+
+
+
+if __name__ == "__main__":
+
+    print("Maze")
+    maze: Maze = Maze()
+    print(maze)
+    solution1 :Optional[Node[MazeLocation]] = dfs(maze.start, maze.goal_test, maze.successors)
+
+    if solution1 is None:
+        print("No solution found using DFS")
+
+    else:
+        path1: List[MazeLocation] = node_to_path(solution1)
+        maze.mark(path1)
+        print(maze)
+        maze.clear(path1)

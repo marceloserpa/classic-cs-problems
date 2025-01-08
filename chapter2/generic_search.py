@@ -1,6 +1,4 @@
 from __future__ import annotations
-from decimal import Clamped
-from optparse import Option
 from typing import TypeVar, Iterable, Sequence, Generic, List, Callable, Set, Deque, Dict, Any, Optional
 from typing_extensions import Protocol
 from heapq import heappush, heappop
@@ -48,7 +46,7 @@ def dfs(initial: T, goal_test: Callable[[T], bool], successors: Callable[[T], Li
 
     # frontier are places that we didnt visit yet
     frontier: Stack[Node[T]] = Stack()
-    frontier.push(initial, None)
+    frontier.push(Node(initial, None))
 
     explored: Set[T] = { initial}
 
