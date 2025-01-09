@@ -67,6 +67,32 @@ def dfs(initial: T, goal_test: Callable[[T], bool], successors: Callable[[T], Li
 
     return None
 
+
+def bfs(initial: T, goal_test: Callable[[T], bool], successors: Callable[[T], List[T]]) -> Optional[Node]:
+
+    # frontier are places that we didnt visit yet
+    frontier: Queue[Node[T]] = Queue()
+    frontier.push(Node(initial, None))
+
+    explored: Set[T] = { initial}
+
+    # explore all places until reach the goal
+    while not frontier.empty:
+        current_node: Node[T] = frontier.pop()
+        current_state: T = current_node.state
+
+        # if True, we found the goal
+        if goal_test(current_state):
+            return current_node
+        
+        for child in successors(current_state):
+            if child in explored:
+                continue
+            explored.add(child)
+            frontier.push(Node(child, current_node))
+
+    return None    
+
 def node_to_path(node: Node[T]) -> List[T]:
     path: List[T] = [node.state]
 

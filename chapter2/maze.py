@@ -4,7 +4,7 @@ import random
 from math import sqrt
 
 #from generic_search import dfs, bfs, node_to_path, astar, Node
-from generic_search import dfs, node_to_path, Node
+from generic_search import dfs, bfs, node_to_path, Node
 
 class Cell(str, Enum):
     EMPTY = "-"
@@ -97,3 +97,15 @@ if __name__ == "__main__":
         maze.mark(path1)
         print(maze)
         maze.clear(path1)
+
+
+    solution2 :Optional[Node[MazeLocation]] = bfs(maze.start, maze.goal_test, maze.successors)
+
+    if solution2 is None:
+        print("No solution found using DFS")
+
+    else:
+        path2: List[MazeLocation] = node_to_path(solution2)
+        maze.mark(path2)
+        print(maze)
+        maze.clear(path2)        
