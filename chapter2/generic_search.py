@@ -93,6 +93,36 @@ def bfs(initial: T, goal_test: Callable[[T], bool], successors: Callable[[T], Li
 
     return None    
 
+
+def astar(initial: T, goal_test: Callable[[T], bool], successors: Callable[[T], List[T]], heuristic: Callable[[T], float]) -> Optional[Node]:
+
+    # frontier are places that we didnt visit yet
+    frontier: PriorityQueue[Node[T]] = PriorityQueue()
+    frontier.push(Node(initial, None, 0.0, heuristic(initial)))
+
+    # places already visited
+    explored: Dict[T, float] = { initial: 0.0}
+
+    # explore all places until reach the goal
+    while not frontier.empty:
+        current_node: Node[T] = frontier.pop()
+        current_state: T = current_node.state
+
+        # if True, we found the goal
+        if goal_test(current_state):
+            return current_node
+        
+        for child in successors(current_state):
+
+            # 1 assumes a grid, need a cost function for more sophisticated apps
+            new_cost: float = current_node.cost + 1
+
+            if child not in explored or explored[child] > new_cost:
+                explored[child] = new_cost
+                frontier.push(Node(child, current_node, new_cost, heuristic(child)))
+
+    return None    
+
 def node_to_path(node: Node[T]) -> List[T]:
     path: List[T] = [node.state]
 

@@ -4,7 +4,7 @@ import random
 from math import sqrt
 
 #from generic_search import dfs, bfs, node_to_path, astar, Node
-from generic_search import dfs, bfs, node_to_path, Node
+from generic_search import astar, dfs, bfs, node_to_path, Node
 
 class Cell(str, Enum):
     EMPTY = "-"
@@ -126,3 +126,16 @@ if __name__ == "__main__":
         maze.mark(path2)
         print(maze)
         maze.clear(path2)        
+
+
+    distance: Callable[[MazeLocation], float] = manhattan_distance(maze.goal)
+    solution3 :Optional[Node[MazeLocation]] = astar(maze.start, maze.goal_test, maze.successors, distance)
+
+    if solution3 is None:
+        print("No solution found using A*")
+
+    else:
+        path3: List[MazeLocation] = node_to_path(solution3)
+        maze.mark(path3)
+        print(maze)
+        maze.clear(path3)    
