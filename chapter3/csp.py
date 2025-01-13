@@ -34,4 +34,10 @@ class CSP(Generic[V, D]):
             else:
                 self.constraints[variable].append(constraint)
 
+    def consistent(self, variable: V, assignment: Dict[V, D]) -> bool:
+        for constraint in self.constraints[variable]:
+            if not constraint.satisfied(assignment):
+                return False
+
+        return True
         
