@@ -9,8 +9,6 @@ class SendMoreMoneyConstraint(Constraint[str, int]):
 
     def satisfied(self, assignment: Dict[str, int]) -> bool:
 
-        print(assignment)
-
         # check if it have duplicated values
         if len(set(assignment.values())) < len(assignment):
             return False
