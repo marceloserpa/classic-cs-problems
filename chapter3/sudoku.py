@@ -3,8 +3,24 @@ from typing import List
 
 
 def print_board(board: List[List[int]]) -> None:
+    board_text: str = ""
 
-    print(board)
+    for row in range(9):
+
+        if row == 3 or row == 6:
+            board_text += f"________________________\n"
+
+        for column in range(9):
+            board_text += f"{board[row][column]} "
+            if column == 8:
+                board_text += "\n"
+
+            if column == 2 or column == 5:
+                board_text += " | "
+            
+
+    
+    print(board_text)
 
 
 
