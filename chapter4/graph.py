@@ -2,6 +2,11 @@ from typing import Optional
 from typing import TypeVar, Generic, List, Optional
 from edge import Edge
 
+import sys
+sys.path.insert(0, '..')
+from chapter2.generic_search import bfs, Node,node_to_path
+
+
 # type of the vertices in the graph
 V = TypeVar("V")
 
@@ -75,7 +80,7 @@ if __name__ == "__main__":
     # test basic Graph construction
     city_graph: Graph[str] = Graph(["Seattle", "San Francisco", "Los Angeles", "Riverside", "Phoenix", "Chicago", "Boston", "New York",
     "Atlanta", "Miami", "Dallas", "Houston", "Detroit", "Philadelphia", "Washington"])
-    
+
     city_graph.add_edge_by_vertices("Seattle", "Chicago")
     city_graph.add_edge_by_vertices("Seattle", "San Francisco")
     city_graph.add_edge_by_vertices("San Francisco", "Riverside")
@@ -104,3 +109,12 @@ if __name__ == "__main__":
     city_graph.add_edge_by_vertices("Philadelphia", "Washington")
 
     print(city_graph)
+
+    bfs_result: Optional[Node[V]] = bfs("Boston", lambda x: x == "Miami", city_graph.neighbors_for_vertex)
+
+    if bfs_result is None:
+        print("No solution found using breadth-first search!")
+    else:
+        path: List[V] = node_to_path(bfs_result)
+        print("Path from Boston to Miammi:")
+        print(path)
