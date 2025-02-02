@@ -2,10 +2,13 @@ from __future__ import annotations
 from typing import TypeVar, Generic, List, Sequence
 from copy import deepcopy
 from functools import partial
-from random import random, uniform
+from random import random, randrange, uniform
 from statistics import mean, pstdev
 from dataclasses import dataclass
 from data_point import DataPoint
+
+import matplotlib.pyplot as plt
+import numpy as np
 
 def zscores(original: Sequence[float]) -> List[float]:
     avg: float = mean(original)
@@ -117,15 +120,25 @@ class KMeans(Generic[Point]):
 
 if __name__ == "__main__":
 
-    point1: DataPoint = DataPoint([2.0, 1.0, 1.0])
-    point2: DataPoint = DataPoint([2.0, 2.0, 5.0])
-    point3: DataPoint = DataPoint([3.0, 1.5, 2.5])
+    datapoints: List[DataPoint] = []
 
-    datapoints: List[DataPoint] = [point1, point2, point3]
-    print(datapoints)
-    
+    for i in range(50):
+        x: int = randrange(10)
+        y: int = randrange(10)
+        datapoints.append(DataPoint([x, y]))
+
     kmeans_test: KMeans[DataPoint] = KMeans(2, datapoints)
     test_clusters: List[KMeans.Cluster] = kmeans_test.run()
 
     for index, cluster in enumerate(test_clusters):
         print(f"Cluster {index}: {cluster.points}")
+
+    x = np.array([0])
+    y = np.array([0])
+
+    for datapoint in datapoints:
+        x = np.append(x, datapoint.dimensions[0])
+        y = np.append(y, datapoint.dimensions[1])
+
+    plt.scatter(x, y)
+    plt.show()
