@@ -130,15 +130,22 @@ if __name__ == "__main__":
     kmeans_test: KMeans[DataPoint] = KMeans(2, datapoints)
     test_clusters: List[KMeans.Cluster] = kmeans_test.run()
 
+    x = np.array([0])
+    y = np.array([0])
+    categories = np.array([0])
+
+    # add array with all possible colors
     for index, cluster in enumerate(test_clusters):
         print(f"Cluster {index}: {cluster.points}")
 
-    x = np.array([0])
-    y = np.array([0])
+        for datapoint in cluster.points:
+            x = np.append(x, datapoint.dimensions[0])
+            y = np.append(y, datapoint.dimensions[1])
+            categories = np.append(categories, index)
 
-    for datapoint in datapoints:
-        x = np.append(x, datapoint.dimensions[0])
-        y = np.append(y, datapoint.dimensions[1])
+    # use colormap
+    colormap = np.array(['r', 'g', 'b'])
+    
 
-    plt.scatter(x, y)
+    plt.scatter(x, y, s=100, c=colormap[categories])
     plt.show()
