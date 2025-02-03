@@ -146,6 +146,5 @@ if __name__ == "__main__":
     # use colormap
     colormap = np.array(['r', 'g', 'b'])
     
-
     plt.scatter(x, y, s=100, c=colormap[categories])
     plt.show()
