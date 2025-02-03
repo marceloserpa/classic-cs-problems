@@ -1,3 +1,9 @@
 # K-Means
 
-![K-Means Cluster](images/clusters.png)
+Red = cluster 1
+
+Blue = cluster 2
+
+Green = centroids
+
+![K-Means Cluster](images/k-means-cluster.png)

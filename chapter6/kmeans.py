@@ -143,8 +143,12 @@ if __name__ == "__main__":
             y = np.append(y, datapoint.dimensions[1])
             categories = np.append(categories, index)
 
+        x = np.append(x, cluster.centroid.dimensions[0])
+        y = np.append(y, cluster.centroid.dimensions[1])
+        categories = np.append(categories, 2)            
+
     # use colormap
-    colormap = np.array(['r', 'g', 'b'])
+    colormap = np.array(['r', 'b', 'g'])
     
     plt.scatter(x, y, s=100, c=colormap[categories])
     plt.show()
