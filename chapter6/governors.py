@@ -3,6 +3,10 @@ from typing import List
 from data_point import DataPoint
 from kmeans import KMeans
 
+import matplotlib.pyplot as plt
+import numpy as np
+
+
 class Governor(DataPoint):
 
     def __init__(self, longitude: float, age: float, state: str) -> None:
@@ -14,7 +18,6 @@ class Governor(DataPoint):
 
     def __repr__(self) -> str:
         return f"{self.state}: (longitude: {self.longitude}, age: {self.age}"
-
 
 if __name__ == "__main__":
     governors: List[Governor] = [
@@ -71,6 +74,19 @@ if __name__ == "__main__":
 
     kmeans: KMeans[Governor] = KMeans(2, governors)
     gov_clusters: List[KMeans.Cluster] = kmeans.run()
-    
+
+    x = np.array([])
+    y = np.array([])
+
     for index, cluster in enumerate(gov_clusters):
-        print(f"Cluster {index}: {cluster.points}\n")    
+        print(f"Cluster {index}: {cluster.points}")
+
+        for datapoint in cluster.points:
+            x = np.append(x, datapoint.dimensions[0])
+            y = np.append(y, datapoint.dimensions[1])
+
+        x = np.append(x, cluster.centroid.dimensions[0])
+        y = np.append(y, cluster.centroid.dimensions[1])
+
+    plt.scatter(x,y)
+    plt.show()        
