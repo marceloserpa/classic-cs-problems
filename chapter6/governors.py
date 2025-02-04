@@ -73,10 +73,11 @@ if __name__ == "__main__":
         Governor(-107.30249, 55, "Wyoming")]
 
     kmeans: KMeans[Governor] = KMeans(2, governors)
-    gov_clusters: List[KMeans.Cluster] = kmeans.run()
+    gov_clusters: List[KMeans.Cluster[Governor]] = kmeans.run()
 
     x = np.array([])
     y = np.array([])
+    text = np.array([])
 
     for index, cluster in enumerate(gov_clusters):
         print(f"Cluster {index}: {cluster.points}")
@@ -84,9 +85,20 @@ if __name__ == "__main__":
         for datapoint in cluster.points:
             x = np.append(x, datapoint.dimensions[0])
             y = np.append(y, datapoint.dimensions[1])
+            text = np.append(text, datapoint.state)
 
         x = np.append(x, cluster.centroid.dimensions[0])
         y = np.append(y, cluster.centroid.dimensions[1])
+        text = np.append(text, datapoint.state)
 
     plt.scatter(x,y)
+
+    for i in range(len(x)): 
+        plt.annotate(text[i], (x[i], y[i] + 0.2)) 
+
+
+    plt.title("US Governors: age vs longitude") 
+    plt.xlabel("Longitude") 
+    plt.ylabel("Age") 
+
     plt.show()        
