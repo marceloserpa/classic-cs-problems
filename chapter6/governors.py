@@ -78,24 +78,29 @@ if __name__ == "__main__":
     x = np.array([])
     y = np.array([])
     text = np.array([])
+    categories = np.array([],  dtype='i')
 
     for index, cluster in enumerate(gov_clusters):
         print(f"Cluster {index}: {cluster.points}")
 
+        print(index)
         for datapoint in cluster.points:
             x = np.append(x, datapoint.dimensions[0])
             y = np.append(y, datapoint.dimensions[1])
             text = np.append(text, datapoint.state)
+            categories = np.append(categories, index)
 
         x = np.append(x, cluster.centroid.dimensions[0])
         y = np.append(y, cluster.centroid.dimensions[1])
         text = np.append(text, datapoint.state)
+        categories = np.append(categories, 2)
+    
+    colormap = np.array(['r', 'b', 'g'])
 
-    plt.scatter(x,y)
+    plt.scatter(x, y, s=100, c=colormap[categories])
 
     for i in range(len(x)): 
         plt.annotate(text[i], (x[i], y[i] + 0.2)) 
-
 
     plt.title("US Governors: age vs longitude") 
     plt.xlabel("Longitude") 
