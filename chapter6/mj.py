@@ -3,6 +3,9 @@ from typing import List
 from data_point import DataPoint
 from kmeans import KMeans
 
+import matplotlib.pyplot as plt
+import numpy as np
+
 class Album(DataPoint):
 
     def __init__(self, name: str, year: int, length: float, tracks: float) -> None:
@@ -32,6 +35,32 @@ if __name__ == "__main__":
     kmeans: KMeans[Album] = KMeans(2, albums)      
 
     clusters: List[KMeans.Cluster] = kmeans.run()
-    
+
+    x = np.array([])
+    y = np.array([])
+    text = np.array([])
+    categories = np.array([],  dtype='i')
+
+
     for index, cluster in enumerate(clusters):
         print(f"Cluster {index} Avg Length {cluster.centroid.dimensions[0]} Avg Tracks {cluster.centroid.dimensions[1]}: {cluster.points}\n")  
+
+        for album in cluster.points:
+            x = np.append(x, album.dimensions[0])
+            y = np.append(y, album.dimensions[1])
+            text = np.append(text, album.name)
+            categories = np.append(categories, index)
+
+        x = np.append(x, cluster.centroid.dimensions[0])
+        y = np.append(y, cluster.centroid.dimensions[1])
+        text = np.append(text, album.name)
+        categories = np.append(categories, 2)
+
+    colormap = np.array(['r', 'b', 'g'])
+
+    plt.scatter(x, y, s=100, c=colormap[categories])
+
+    for i in range(len(x)): 
+        plt.annotate(text[i], (x[i], y[i] + 0.2)) 
+
+    plt.show()
