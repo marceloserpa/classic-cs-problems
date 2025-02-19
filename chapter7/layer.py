@@ -43,10 +43,7 @@ class Layer:
 
     def calculate_deltas_for_hidden_layer(self, next_layer: Layer) -> None:
         for index, neuron in enumerate(self.neurons):
-            next_weights: List[float] = [n.weights[index] for n in next_
-            layer.neurons]
+            next_weights: List[float] = [n.weights[index] for n in next_layer.neurons]
             next_deltas: List[float] = [n.delta for n in next_layer.neurons]
-            sum_weights_and_deltas: float = dot_product(next_weights, next_
-            deltas)
-            neuron.delta = neuron.derivative_activation_function(neuron.output_
-            cache) * sum_weights_and_deltas
+            sum_weights_and_deltas: float = dot_product(next_weights, next_deltas)
+            neuron.delta = neuron.derivative_activation_function(neuron.output_cache) * sum_weights_and_deltas
