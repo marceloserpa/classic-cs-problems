@@ -30,7 +30,7 @@ class Network:
 
     # pushes input data to firs layer, the ouput from the first as input to the second...
     def outputs(self, input: List[float]) -> List[float]:
-        return reduce(lambda inputs, layer: Layer.outputs(inputs), self.layers, input)
+        return reduce(lambda inputs, layer: layer.outputs(inputs), self.layers, input)
 
     # Figure out each neuron's changes based on the errors of the output
     # versus the expected outcome
@@ -75,13 +75,3 @@ class Network:
                 correct += 1
         percentage: float = correct / len(inputs)
         return correct, len(inputs), percentage
-
-    # feature scaling: normalize the value to 0/1
-    def normalize_by_feature_scaling(dataset:List[List[float]]) -> None:
-        for col_num in range(len(dataset[0])):
-            column: List[float] = [row[col_num] for row in dataset]
-            maximum = max(column)
-        minimum = min(column)
-        
-        for row_num in range(len(dataset)):
-            dataset[row_num][col_num] = (dataset[row_num][col_num] - minimum ) / (maximum - minimum)
