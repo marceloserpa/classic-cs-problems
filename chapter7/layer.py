@@ -24,9 +24,8 @@ class Layer:
             else:
                 random_weights = [random() for _ in range(len(previous_layer.neurons))]
        
-        neuron: Neuron = Neuron(random_weights, learning_rate,
-        activation_function, derivative_activation_function)
-        self.neurons.append(neuron)
+            neuron: Neuron = Neuron(random_weights, learning_rate, activation_function, derivative_activation_function)
+            self.neurons.append(neuron)
         self.output_cache: List[float] = [0.0 for _ in range(num_neurons)]
 
     def outputs(self, inputs: List[float]) -> List[float]:
